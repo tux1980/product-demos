@@ -12,6 +12,8 @@ collections:
   - name: community.general
     version: 6.3.0
   - name: containers.podman
+  - name: redhat.rhel_idm
+    version: 1.9.2
   # windows
   - name: chocolatey.chocolatey
   - name: community.windows

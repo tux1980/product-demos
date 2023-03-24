@@ -1,0 +1,8 @@
+---
+- name: Join RHEL to Active Directory
+  hosts: "{{ _hosts | default(omit) }}"
+  become: true
+
+  roles:
+    - role: redhat.rhel_idm.ipaclient
+      state: present
