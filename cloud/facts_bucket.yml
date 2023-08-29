@@ -4,7 +4,7 @@
 
   tasks:
     - name: set fact
-      setfact:
+      set_fact:
         custom_value: asdf
 
     #- name: dump host facts
