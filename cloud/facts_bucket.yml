@@ -27,6 +27,7 @@
         object: "{{ inventory_hostname }}.json"
         content: "{{ ansible_facts | to_nice_json}}"
         mode: put
+      delegate_to: localhost
 
     #- name: Put website files
     #  community.aws.s3_sync:
