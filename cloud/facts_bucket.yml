@@ -1,0 +1,37 @@
+---
+- name: collect host facts
+  hosts: "{{ _hosts }}"
+
+  tasks:
+    - name: set fact
+      setfact:
+        custom_value: asdf
+
+    #- name: dump host facts
+    #  copy:
+    #    content: "{{ ansible_facts | to_json }}"
+    #    dest: "{{ playbook_dir }}/{{ansible_host}}.json"
+
+    - name: Create report bucket
+      amazon.aws.s3_bucket:
+        name: "{{ reports_aws_bucket_name }}"
+        region: "{{ reports_aws_region }}"
+        state: present
+        object_ownership: BucketOwnerPreferred
+      delegate_to: localhost
+      run_once: true
+
+    - name: Put facts
+      amazon.aws.s3_object:
+        bucket: "{{ reports_aws_bucket_name }}"
+        object: "{{ inventory_hostname }}.json"
+        content: "{{ ansible_facts | to_nice_json}}"
+        mode: put
+
+    #- name: Put website files
+    #  community.aws.s3_sync:
+    #    bucket: "{{ reports_aws_bucket_name }}"
+    #    file_root: "{{ playbook_dir }}"
+    #    include: '*.json'
+    #  delegate_to: localhost
+    #  run_once: true
