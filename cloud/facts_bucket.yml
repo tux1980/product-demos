@@ -3,14 +3,17 @@
   hosts: "{{ _hosts }}"
 
   tasks:
-    - name: set fact
+    - name: store facts
       set_fact:
-        custom_value: asdf
+        _ansible_facts: "{{ ansible_facts }}"
 
-    #- name: dump host facts
-    #  copy:
-    #    content: "{{ ansible_facts | to_json }}"
-    #    dest: "{{ playbook_dir }}/{{ansible_host}}.json"
+    - name: get current user
+      command: whoami
+      register: current_user
+
+    - name: set custom fact
+      set_fact:
+        _ansible_facts: "{{ _ansible_facts | combine( { 'custom_fact': current_user } )}}"
 
     - name: Create report bucket
       amazon.aws.s3_bucket:
@@ -24,15 +27,7 @@
     - name: Put facts
       amazon.aws.s3_object:
         bucket: "{{ reports_aws_bucket_name }}"
-        object: "{{ inventory_hostname }}.json"
-        content: "{{ ansible_facts | to_nice_json}}"
+        object: "{{ inventory_hostname }}/{{ date_time.iso8601 }}.json"
+        content: "{{ _ansible_facts | to_nice_json}}"
         mode: put
       delegate_to: localhost
-
-    #- name: Put website files
-    #  community.aws.s3_sync:
-    #    bucket: "{{ reports_aws_bucket_name }}"
-    #    file_root: "{{ playbook_dir }}"
-    #    include: '*.json'
-    #  delegate_to: localhost
-    #  run_once: true
