@@ -28,6 +28,6 @@
       amazon.aws.s3_object:
         bucket: "{{ reports_aws_bucket_name }}"
         object: "{{ inventory_hostname }}/{{ ansible_facts.date_time.iso8601 }}.json"
-        content: "{{ _ansible_facts | to_nice_json}}"
+        content: "{{ facts_dump | to_nice_json}}"
         mode: put
       delegate_to: localhost
