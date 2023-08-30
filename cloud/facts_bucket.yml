@@ -1,6 +1,10 @@
 ---
 - name: collect host facts
   hosts: "{{ _hosts }}"
+  vars:
+    facts_aws_region: us-east-2
+    facts_aws_bucket_prefix: "{{ lookup('ansible.builtin.env', 'AWS_ACCESS_KEY_ID')[1:5] | lower }}"
+    facts_aws_bucket_name: "{{ reports_aws_bucket_prefix }}-facts"
 
   tasks:
     - name: store facts
@@ -17,8 +21,8 @@
 
     - name: Create report bucket
       amazon.aws.s3_bucket:
-        name: "{{ reports_aws_bucket_name }}"
-        region: "{{ reports_aws_region }}"
+        name: "{{ facts_aws_bucket_name }}"
+        region: "{{ facts_aws_region }}"
         state: present
         object_ownership: BucketOwnerPreferred
       delegate_to: localhost
@@ -26,7 +30,7 @@
 
     - name: Put facts
       amazon.aws.s3_object:
-        bucket: "{{ reports_aws_bucket_name }}"
+        bucket: "{{ facts_aws_bucket_name }}"
         object: "{{ inventory_hostname }}/{{ ansible_facts.date_time.iso8601 }}.json"
         content: "{{ facts_dump | to_nice_json}}"
         mode: put
