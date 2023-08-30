@@ -5,7 +5,7 @@
   tasks:
     - name: store facts
       set_fact:
-        _ansible_facts: "{{ ansible_facts }}"
+        facts_dump: "{{ ansible_facts }}"
 
     - name: get current user
       command: whoami
@@ -13,7 +13,7 @@
 
     - name: set custom fact
       set_fact:
-        _ansible_facts: "{{ _ansible_facts | combine( { 'custom_fact': current_user } )}}"
+        facts_dump: "{{ facts_dump | combine( { 'custom_fact': current_user } )}}"
 
     - name: Create report bucket
       amazon.aws.s3_bucket:
