@@ -12,6 +12,7 @@
         content: "{{ win_disk }}"
         dest: "{{ playbook_dir }}/report.txt"
       run_once: true
+      connection: local
 
     - name: cat report.txt
       local_action:
