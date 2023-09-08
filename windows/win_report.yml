@@ -1,0 +1,20 @@
+---
+- hosts: "{{ _hosts }}"
+  
+  tasks:
+    - name: Run Powershell Command
+      ansible.windows.win_shell: Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name='FreeSpaceGB';Expression={[math]::Round($_.FreeSpace / 1GB, 2)}}, @{Name='TotalSpaceGB';Expression={[math]::Round($_.Size / 1GB, 2)}}
+      register: win_disk
+
+
+    - name: local action for template creation
+      local_action:
+      ansible.builtin.copy:
+      content: "{{ win_disk }}"
+      dest: "{{ playbook_dir }}/report.txt"
+      run_once: true
+
+    - name: cat report.txt
+      local_action:
+      ansible.builtin.command: cat report.txt
+      run_once: true
