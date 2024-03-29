@@ -152,6 +152,7 @@ controller_templates:
     credentials:
       - AWS
     project: Ansible official demo project
+    execution_environment: Cloud Services Execution Environment
     playbook: cloud/create_vpc.yml
     inventory: Demo Inventory
     notification_templates_started: Telemetry
@@ -342,6 +343,7 @@ controller_templates:
     credentials:
       - AWS
     project: Ansible official demo project
+    execution_environment: Cloud Services Execution Environment
     playbook: cloud/aws_key.yml
     inventory: Demo Inventory
     notification_templates_started: Telemetry
@@ -381,6 +383,7 @@ controller_templates:
     credentials:
       - AWS
     project: Ansible official demo project
+    execution_environment: Cloud Services Execution Environment
     playbook: cloud/snapshot_ec2.yml
     inventory: Demo Inventory
     notification_templates_started: Telemetry
@@ -412,6 +415,7 @@ controller_templates:
     credentials:
       - AWS
     project: Ansible official demo project
+    execution_environment: Cloud Services Execution Environment
     playbook: cloud/restore_ec2.yml
     inventory: Demo Inventory
     notification_templates_started: Telemetry

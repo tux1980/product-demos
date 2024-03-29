@@ -10,15 +10,13 @@
       loop: "{{ controller_components }}"
       vars:  # noqa var-naming[no-role-prefix]
         controller_components:
+          - execution_environments
           - notification_templates
           - job_templates
           - settings
         controller_execution_environments:
           - name: product-demos
             image: http://quay.io/acme_corp/product-demos-ee:latest
-        controller_organizations:
-          - name: Default
-            default_environment: product-demos
         controller_notifications:
           - name: Telemetry
             organization: Default
